@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>String Processor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 8px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #00944f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #109212;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>String Processor</h1>
+        <input type="text" id="inputString" placeholder="Enter text to process">
+        <button onclick="processString()">Process</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function processString() {
+            const input = document.getElementById('inputString').value;
+            const resultDiv = document.getElementById('result');
+
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: input })
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <p><strong>Original:</strong> ${data.original}</p>
+                    <p><strong>Processed:</strong> ${data.processed.join(', ')}</p>
+                `;
+            })
+            .catch(error => {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+services:
+  postgresy:
+    build:
+      context: .
+      dockerfile: postgresy.dockerfile
+    container_name: postgresy
+    environment:
+      POSTGRES_PASSWORD: xxx
+    ports:
+      - "5435:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  user:
+    build:
+      context: .
+      dockerfile: user.dockerfile
+    container_name: user
+    networks:
+      - app-network
+  
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+    postgres_data: 
+  

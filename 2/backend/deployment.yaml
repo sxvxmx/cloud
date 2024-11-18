@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2  
+  selector: # выбираем нужные поды
+    matchLabels:
+      app: backend
+  template: # определяем шаблон для подов
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers: # контейнеры в поде
+      - name: backend
+        image: backend:latest  
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080  
